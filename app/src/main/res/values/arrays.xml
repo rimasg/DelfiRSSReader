@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rss_titles">
+        <item>Dienos naujienos</item>
+        <item>Nuomonių ringas</item>
+        <item>Pjūvis</item>
+        <item>Politiko akimis</item>
+        <item>Lietuvoje</item>
+        <item>Jaunimo sodas</item>
+        <item>Sveikata</item>
+        <item>Lietuviai svetur</item>
+        <item>Užsienyje</item>
+        <item>Pikantiškos naujienos</item>
+        <item>Teisė</item>
+        <item>Kriminalai ir nelaimės</item>
+        <item>Dienos citata</item>
+        <item>Medijos Karas Propaganda</item>
+    </string-array>
+    <string-array name="rss_urls">
+        <item>http://www.delfi.lt/rss/feeds/daily.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/ringas.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/lit.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/politics.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/lithuania.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/education.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/health.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/emigrants.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/world.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/hot.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/law.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/crime.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/quotation.xml</item>
+        <item>http://www.delfi.lt/rss/feeds/medijos-karas-propaganda.xml</item>
+    </string-array>
+</resources>
