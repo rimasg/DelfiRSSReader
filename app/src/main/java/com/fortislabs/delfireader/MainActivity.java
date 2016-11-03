@@ -8,9 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.fortislabs.delfireader.data.RssDataContract;
+import com.fortislabs.delfireader.items.Title;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerFragment
-        .NavigationDrawerCallbacks, RssContract.View{
+public class MainActivity extends AppCompatActivity implements
+        NavigationDrawerFragment.NavigationDrawerCallbacks, RssContract.View{
 
     private RssContract.Presenter presenter;
     private NavigationDrawerFragment navigationDrawerFragment;
@@ -53,8 +54,19 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.start();
+    }
+
+    @Override
     public void onNavigationDrawerItemSelected(int position) {
         Toast.makeText(this, "Item selected: " + position, Toast.LENGTH_SHORT).show();
+        final Cursor cursor = titlesAdapter.getCursor();
+        if (cursor.moveToPosition(position)) {
+            final Title title = new Title(cursor);
+            presenter.getContentByTitle(title.title);
+        }
     }
 
     @Override

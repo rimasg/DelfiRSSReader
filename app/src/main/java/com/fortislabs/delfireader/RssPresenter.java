@@ -49,6 +49,6 @@ public class RssPresenter implements RssContract.Presenter {
 
     @Override
     public void start() {
-
+        getAllTitles();
     }
 }
