@@ -5,36 +5,49 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.fortislabs.delfireader.data.DatabaseManager;
+import com.fortislabs.delfireader.items.Title;
 
 /**
  * Created by SID on 2016-11-03.
  */
 
 public class RssPresenter implements RssContract.Presenter {
-    private final RssContract.View view;
+    private final RssContract.View titleView;
+    private final RssContract.View contentView;
     private final Context context;
 
-    public RssPresenter(Context context, RssContract.View view) {
+    public RssPresenter(Context context, RssContract.View titleView, RssContract.View contentView) {
         this.context = context;
-        this.view = view;
-        this.view.setPresenter(this);
+        this.titleView = titleView;
+        this.titleView.setPresenter(this);
+        this.contentView = contentView;
+        this.contentView.setPresenter(this);
     }
 
     @Override
-    public void getAllTitles() {
+    public void loadTitles() {
         final Cursor cursor = DatabaseManager.inst(context).getAllTitles();
-        view.showTitles(cursor);
+        titleView.showContent(cursor);
     }
 
     @Override
-    public void getContentByTitle(String title) {
+    public void loadContentByTitle(String title) {
         final Cursor cursor = DatabaseManager.inst(context).getContentByTitle(title);
-        view.showContent(cursor);
+        contentView.showContent(cursor);
     }
 
     @Override
-    public void addTitles(ContentValues values) {
-        DatabaseManager.inst(context).addTitles(values);
+    public void loadContentByTitleId(int id) {
+        final Cursor cursor = DatabaseManager.inst(context).getAllTitles();
+        if (cursor.moveToPosition(id)) {
+            final Title title = new Title(cursor);
+            loadContentByTitle(title.title);
+        }
+    }
+
+    @Override
+    public void addTitle(ContentValues values) {
+        DatabaseManager.inst(context).addTitle(values);
     }
 
     @Override
@@ -49,6 +62,6 @@ public class RssPresenter implements RssContract.Presenter {
 
     @Override
     public void start() {
-        getAllTitles();
+        loadTitles();
     }
 }

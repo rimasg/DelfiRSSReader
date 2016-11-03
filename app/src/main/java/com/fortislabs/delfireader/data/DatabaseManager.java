@@ -44,7 +44,7 @@ public final class DatabaseManager {
         return cursor;
     }
 
-    public long addTitles(ContentValues values) {
+    public long addTitle(ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final long rowId = db.insert(RssDataContract.TitleEntry.TABLE_NAME, null, values);
         return rowId;

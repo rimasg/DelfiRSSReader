@@ -9,19 +9,17 @@ import android.database.Cursor;
 
 public interface RssContract {
     interface View extends BaseView<Presenter> {
-        void onLoadData();
-
-        void showTitles(Cursor cursor);
-
         void showContent(Cursor cursor);
     }
 
     interface Presenter extends BasePresenter {
-        void getAllTitles();
+        void loadTitles();
 
-        void getContentByTitle(String title);
+        void loadContentByTitle(String title);
 
-        void addTitles(ContentValues values);
+        void loadContentByTitleId(int id);
+
+        void addTitle(ContentValues values);
 
         void addContent(ContentValues values);
 

@@ -4,12 +4,14 @@ package com.fortislabs.delfireader;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,11 +25,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.fortislabs.delfireader.data.RssDataContract;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavigationDrawerFragment extends Fragment {
+public class TitlesFragment extends Fragment implements RssContract.View {
+    private static final String[] FROM_TITLE = {RssDataContract.ContentEntry.COL_TITLE};
+    private static final int[] TO_TITLE = {R.id.rss_title};
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
     private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
@@ -36,16 +42,17 @@ public class NavigationDrawerFragment extends Fragment {
     private ActionBarDrawerToggle drawerToggle;
 
     private DrawerLayout drawerLayout;
-    private ListView drawerListView;
+    private ListView titleListView;
     private View fragmentContainerView;
 
     private int currentSelectedPosition = 0;
-    private boolean fromSavedInstancestate;
+    private boolean fromSavedInstanceState;
     private boolean userLearnedDrawer;
 
-    public NavigationDrawerFragment() {
-        // Required empty public constructor
-    }
+    private SimpleCursorAdapter adapter;
+    private RssContract.Presenter presenter;
+
+    public TitlesFragment() { /* Required empty public constructor*/ }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +63,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         if (savedInstanceState != null) {
             currentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-            fromSavedInstancestate = true;
+            fromSavedInstanceState = true;
         }
 
         selectItem(currentSelectedPosition);
@@ -71,19 +78,22 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         final String[] RssTitles =  getResources().getStringArray(R.array.rss_titles);
-
-        drawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        titleListView = (ListView) inflater.inflate(R.layout.fragment_titles_list, container, false);
+        titleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        drawerListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(),
-                R.layout.drawer_list_item, R.id.rss_title, RssTitles));
-        return drawerListView;
+        // TODO: 2016.11.03 later uncomment - SimpleCursorAdapter
+/*
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.titles_list_item, null, FROM_TITLE, TO_TITLE, 0);
+        titleListView.setAdapter(adapter);
+*/
+        titleListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(),
+                R.layout.titles_list_item, R.id.rss_title, RssTitles));
+        return titleListView;
     }
 
     public boolean isDrawerOpen() {
@@ -126,7 +136,7 @@ public class NavigationDrawerFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu();
             }
         };
-        if (!userLearnedDrawer && !fromSavedInstancestate) {
+        if (!userLearnedDrawer && !fromSavedInstanceState) {
             drawerLayout.openDrawer(fragmentContainerView);
         }
 
@@ -141,8 +151,8 @@ public class NavigationDrawerFragment extends Fragment {
 
     public void selectItem(int position) {
         currentSelectedPosition = position;
-        if (drawerListView != null) {
-            drawerListView.setItemChecked(position, true);
+        if (titleListView != null) {
+            titleListView.setItemChecked(position, true);
         }
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(fragmentContainerView);
@@ -204,6 +214,17 @@ public class NavigationDrawerFragment extends Fragment {
 
     private ActionBar getActionBar() {
         return ((AppCompatActivity) getActivity()).getSupportActionBar();
+    }
+
+    @Override
+    public void showContent(Cursor cursor) {
+        adapter.swapCursor(cursor);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setPresenter(RssContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     public interface NavigationDrawerCallbacks {
