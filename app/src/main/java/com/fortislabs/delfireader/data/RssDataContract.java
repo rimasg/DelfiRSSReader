@@ -1,6 +1,9 @@
 package com.fortislabs.delfireader.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.fortislabs.delfireader.BuildConfig;
 
 /**
  * Created by SID on 2016-11-02.
@@ -9,8 +12,13 @@ import android.provider.BaseColumns;
 public final class RssDataContract {
     private RssDataContract() { }
 
+    public static final String SCHEME = "content://";
+    public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
+    public static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + CONTENT_AUTHORITY);
+
     public static class TitleEntry implements BaseColumns {
         public static final String TABLE_NAME = "titles";
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
 
         public static final String COL_TITLE = "title";
         public static final String COL_LINK = "link";
@@ -27,6 +35,7 @@ public final class RssDataContract {
 
     public static class ContentEntry implements BaseColumns {
         public static final String TABLE_NAME = "content";
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
 
         public static final String COL_TITLE = "title";
         public static final String COL_DESCRIPTION = "description";

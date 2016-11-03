@@ -15,6 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".data.RssDataProvider"
+            android:authorities="${packageName}"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

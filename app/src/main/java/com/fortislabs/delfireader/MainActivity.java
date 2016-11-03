@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
                 .replace(R.id.container, contentFragment)
                 .commit();
 
-        presenter = new RssPresenter(getApplicationContext(), titlesFragment, contentFragment);
+        presenter = new RssPresenter(getApplicationContext(), getSupportLoaderManager(), titlesFragment, contentFragment);
     }
 
     @Override
