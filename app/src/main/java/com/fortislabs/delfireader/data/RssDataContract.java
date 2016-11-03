@@ -17,6 +17,12 @@ public final class RssDataContract {
 
         public static final int INDEX_TITLE = 1;
         public static final int INDEX_LINK = 2;
+
+        public static final String[] PROJECTION = {
+                _ID,
+                COL_TITLE,
+                COL_LINK
+        };
     }
 
     public static class ContentEntry implements BaseColumns {
@@ -33,5 +39,14 @@ public final class RssDataContract {
         public static final int INDEX_PUB_DATE = 3;
         public static final int INDEX_THUMBNAIL = 4;
         public static final int INDEX_READ = 5;
+
+        public static final String PROJECTION[] = {
+                _ID,
+                COL_TITLE,
+                COL_DESCRIPTION,
+                COL_PUB_DATE,
+                COL_THUMBNAIL,
+                COL_READ
+        };
     }
 }
