@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Okis on 2016.11.03.
@@ -17,7 +18,7 @@ public final class DatabaseManager {
         dbHelper = new DbHelper(context.getApplicationContext());
     }
 
-    public static synchronized DatabaseManager inst(Context context) {
+    public static synchronized DatabaseManager inst(@NonNull Context context) {
         if (inst == null) {
             inst = new DatabaseManager(context);
         }
