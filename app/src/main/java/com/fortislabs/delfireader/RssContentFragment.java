@@ -15,7 +15,7 @@ import com.fortislabs.delfireader.data.RssDataContract;
  * Created by SID on 2016-11-03.
  */
 
-public class ContentFragment extends Fragment implements RssContract.View {
+public class RssContentFragment extends Fragment implements RssContract.View {
     private static final String[] FROM_CONTENT = {
             RssDataContract.ContentEntry.COL_TITLE,
             RssDataContract.ContentEntry.COL_DESCRIPTION
@@ -28,8 +28,8 @@ public class ContentFragment extends Fragment implements RssContract.View {
     private SimpleCursorAdapter adapter;
     private RssContract.Presenter presenter;
 
-    public static ContentFragment newInstance() {
-        ContentFragment fragment = new ContentFragment();
+    public static RssContentFragment newInstance() {
+        RssContentFragment fragment = new RssContentFragment();
         return fragment;
     }
 

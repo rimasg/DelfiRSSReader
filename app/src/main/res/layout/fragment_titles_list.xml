@@ -11,4 +11,4 @@
     android:listSelector="@drawable/list_selector"
     android:background="@color/list_background"
     tools:listitem="@layout/titles_list_item"
-    tools:context="com.fortislabs.delfireader.TitlesFragment"/>
+    tools:context="com.fortislabs.delfireader.RssTitlesFragment"/>

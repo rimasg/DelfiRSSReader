@@ -8,13 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.fortislabs.delfireader.data.RssDataContract;
-import com.fortislabs.delfireader.services.RssPullService;
-
-public class MainActivity extends AppCompatActivity implements TitlesFragment.NavigationDrawerCallbacks{
+public class MainActivity extends AppCompatActivity implements RssTitlesFragment.NavigationDrawerCallbacks{
     private RssContract.Presenter presenter;
     private CharSequence title;
-    private TitlesFragment titlesFragment;
+    private RssTitlesFragment rssTitlesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +19,17 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
         setContentView(R.layout.activity_main);
 
         title = getTitle();
-        titlesFragment = (TitlesFragment) getSupportFragmentManager()
+        rssTitlesFragment = (RssTitlesFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
-        titlesFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        rssTitlesFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        final ContentFragment contentFragment = ContentFragment.newInstance();
+        final RssContentFragment rssContentFragment = RssContentFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.container, contentFragment)
+                .replace(R.id.container, rssContentFragment)
                 .commit();
 
-        presenter = new RssPresenter(getApplicationContext(), getSupportLoaderManager(), titlesFragment, contentFragment);
+        presenter = new RssPresenter(getApplicationContext(), getSupportLoaderManager(), rssTitlesFragment, rssContentFragment);
     }
 
     @Override
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!titlesFragment.isDrawerOpen()) {
+        if (!rssTitlesFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                RssPullService.startRssPullAction(MainActivity.this, RssDataContract.RSS_TITLES_URL);
+                presenter.initRssPullService();
                 break;
             case R.id.action_settings:
                 Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();

@@ -15,6 +15,8 @@ public interface RssContract {
     interface Presenter extends BasePresenter {
         void initLoaders();
 
+        void initRssPullService();
+
         void loadTitles();
 
         void loadContentByTitle(String title);

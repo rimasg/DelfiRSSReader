@@ -35,7 +35,11 @@ public class RssDataProvider extends ContentProvider {
                 cursor = DatabaseManager.inst(getContext()).getAllTitles();
                 break;
             case CONTENT_CODE:
-                cursor = DatabaseManager.inst(getContext()).getContentByTitle(selectionArgs[0]);
+                if (selectionArgs == null) {
+                    cursor = DatabaseManager.inst(getContext()).getAllContent();
+                } else {
+                    cursor = DatabaseManager.inst(getContext()).getContentByTitle(selectionArgs[0]);
+                }
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -80,14 +84,23 @@ public class RssDataProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case TITLE_CODE:
                 id = DatabaseManager.inst(getContext()).bulkInsertTitles(values);
-                break;
+                if (-1 != id) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return id;
+                } else {
+                    throw new SQLiteException("Insert error");
+                }
             case CONTENT_CODE:
                 id = DatabaseManager.inst(getContext()).bulkInsertContent(values);
-                break;
+                if (-1 != id) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return id;
+                } else {
+                    throw new SQLiteException("Insert error");
+                }
             default:
-                throw new IllegalArgumentException("Bulk insert -- Invalid URI: " + uri);
+                throw new IllegalArgumentException("Bulk insert -- Invalid uri: " + uri);
         }
-        return id;
     }
 
     @Override

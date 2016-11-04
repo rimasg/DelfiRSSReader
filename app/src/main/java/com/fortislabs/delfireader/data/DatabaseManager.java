@@ -34,6 +34,15 @@ public final class DatabaseManager {
         return cursor;
     }
 
+    public Cursor getAllContent() {
+        final SQLiteDatabase db = dbHelper.getReadableDatabase();
+        final Cursor cursor = db.query(
+                RssDataContract.ContentEntry.TABLE_NAME,
+                RssDataContract.ContentEntry.PROJECTION,
+                null, null, null, null, null);
+        return cursor;
+    }
+
     public Cursor getContentByTitle(String title) {
         final SQLiteDatabase db = dbHelper.getReadableDatabase();
         final Cursor cursor = db.query(

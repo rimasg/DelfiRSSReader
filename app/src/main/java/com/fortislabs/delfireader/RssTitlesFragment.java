@@ -28,7 +28,7 @@ import android.widget.ListView;
 import com.fortislabs.delfireader.data.RssDataContract;
 
 
-public class TitlesFragment extends Fragment implements RssContract.View {
+public class RssTitlesFragment extends Fragment implements RssContract.View {
     private static final String[] FROM_TITLE = {RssDataContract.ContentEntry.COL_TITLE};
     private static final int[] TO_TITLE = {R.id.rss_title};
 
@@ -49,7 +49,7 @@ public class TitlesFragment extends Fragment implements RssContract.View {
     private SimpleCursorAdapter adapter;
     private RssContract.Presenter presenter;
 
-    public TitlesFragment() { /* Required empty public constructor*/ }
+    public RssTitlesFragment() { /* Required empty public constructor*/ }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
