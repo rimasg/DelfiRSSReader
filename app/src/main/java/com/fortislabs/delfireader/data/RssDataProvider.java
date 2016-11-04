@@ -66,7 +66,7 @@ public class RssDataProvider extends ContentProvider {
                     throw new SQLiteException("Insert error " + uri);
                 }
             case CONTENT_CODE:
-                id = DatabaseManager.inst(getContext()).insertTitle(values);
+                id = DatabaseManager.inst(getContext()).insertContent(values);
                 if (-1 != id) {
                     getContext().getContentResolver().notifyChange(uri, null);
                     return Uri.withAppendedPath(uri, Long.toString(id));

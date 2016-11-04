@@ -30,6 +30,29 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
                 .commit();
 
         presenter = new RssPresenter(getApplicationContext(), getSupportLoaderManager(), rssTitlesFragment, rssContentFragment);
+        // TODO: 2016.11.03 testing only, remove this code
+/*
+        for (int i = 0; i < 10; i++) {
+            final ContentValues titleValues = new ContentValues();
+            final ContentValues contentValues1 = new ContentValues();
+            final ContentValues contentValues2 = new ContentValues();
+            final ContentValues contentValues3 = new ContentValues();
+            titleValues.put(RssDataContract.TitleEntry.COL_TITLE, "Title " + i);
+            titleValues.put(RssDataContract.TitleEntry.COL_LINK, "url");
+            contentValues1.put(RssDataContract.ContentEntry.COL_TITLE, "Title " + i);
+            contentValues1.put(RssDataContract.ContentEntry.COL_DESCRIPTION, "Desc 1");
+            contentValues2.put(RssDataContract.ContentEntry.COL_TITLE, "Title " + i);
+            contentValues2.put(RssDataContract.ContentEntry.COL_DESCRIPTION, "Desc 2");
+            contentValues3.put(RssDataContract.ContentEntry.COL_TITLE, "Title " + i);
+            contentValues3.put(RssDataContract.ContentEntry.COL_DESCRIPTION, "Desc 3");
+            presenter.insertTitle(titleValues);
+            presenter.insertContent(contentValues1);
+            presenter.insertContent(contentValues2);
+            presenter.insertContent(contentValues3);
+        }
+*/
+//        presenter.loadTitles();
+//        presenter.deleteAllRecords();
     }
 
     @Override
