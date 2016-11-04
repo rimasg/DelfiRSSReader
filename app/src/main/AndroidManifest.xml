@@ -22,6 +22,11 @@
             android:enabled="true"
             android:exported="false">
         </provider>
+
+        <service
+            android:name=".services.RssPullService"
+            android:exported="false">
+        </service>
     </application>
 
 </manifest>

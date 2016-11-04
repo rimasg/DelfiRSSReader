@@ -2,11 +2,19 @@ package com.fortislabs.delfireader;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.fortislabs.delfireader.data.RssDataContract;
+import com.fortislabs.delfireader.services.RssPullService;
 
 public class MainActivity extends AppCompatActivity implements TitlesFragment.NavigationDrawerCallbacks{
     private RssContract.Presenter presenter;
     private CharSequence title;
+    private TitlesFragment titlesFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
         setContentView(R.layout.activity_main);
 
         title = getTitle();
-        final TitlesFragment titlesFragment = (TitlesFragment) getSupportFragmentManager()
+        titlesFragment = (TitlesFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navigation_drawer);
         titlesFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
@@ -38,5 +46,39 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
         if (presenter != null) {
             presenter.loadContentByTitleId(position);
         }
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!titlesFragment.isDrawerOpen()) {
+            getMenuInflater().inflate(R.menu.main, menu);
+            restoreActionBar();
+            return true;
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                RssPullService.startRssPullAction(this, RssDataContract.RSS_TITLES_URL);
+                break;
+            case R.id.action_settings:
+                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_about:
+                Toast.makeText(this, "About App", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

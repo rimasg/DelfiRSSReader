@@ -12,6 +12,8 @@ import com.fortislabs.delfireader.BuildConfig;
 public final class RssDataContract {
     private RssDataContract() { }
 
+    public static final String RSS_TITLES_URL = "http://www.delfi.lt/rss/feeds/index.xml";
+
     public static final String SCHEME = "content://";
     public static final String CONTENT_AUTHORITY = BuildConfig.APPLICATION_ID;
     public static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + CONTENT_AUTHORITY);
