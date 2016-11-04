@@ -44,16 +44,42 @@ public final class DatabaseManager {
         return cursor;
     }
 
-    public long addTitle(ContentValues values) {
+    public long insertTitle(ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final long rowId = db.insert(RssDataContract.TitleEntry.TABLE_NAME, null, values);
         return rowId;
     }
 
-    public long addContent(ContentValues values) {
+    public int bulkInsertTitles(ContentValues[] values) {
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete(RssDataContract.TitleEntry.TABLE_NAME, null, null);
+        for (ContentValues value : values) {
+            db.insert(RssDataContract.TitleEntry.TABLE_NAME, null, value);
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return values.length;
+    }
+
+    public long insertContent(ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final long rowId = db.insert(RssDataContract.ContentEntry.TABLE_NAME, null, values);
         return rowId;
+    }
+
+    public int bulkInsertContent(ContentValues[] values) {
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete(RssDataContract.ContentEntry.TABLE_NAME, null, null);
+        for (ContentValues value : values) {
+            db.insert(RssDataContract.ContentEntry.TABLE_NAME, null, value);
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        return values.length;
     }
 
     public int deleteAllRecords(String tableName) {

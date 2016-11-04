@@ -13,16 +13,22 @@ public interface RssContract {
     }
 
     interface Presenter extends BasePresenter {
+        void initLoaders();
+
         void loadTitles();
 
         void loadContentByTitle(String title);
 
         void loadContentByTitleId(int id);
 
-        void addTitle(ContentValues values);
+        void insertTitle(ContentValues values);
 
-        void addContent(ContentValues values);
+        void bulkInsertTitle(ContentValues[] values);
 
-        int deleteAllRecords(String tableName);
+        void insertContent(ContentValues values);
+
+        void bulkInsertContent(ContentValues[] values);
+
+        void deleteAllRecords();
     }
 }

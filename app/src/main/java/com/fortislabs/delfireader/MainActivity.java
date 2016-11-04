@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements TitlesFragment.Na
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                RssPullService.startRssPullAction(this, RssDataContract.RSS_TITLES_URL);
+                RssPullService.startRssPullAction(MainActivity.this, RssDataContract.RSS_TITLES_URL);
                 break;
             case R.id.action_settings:
                 Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();

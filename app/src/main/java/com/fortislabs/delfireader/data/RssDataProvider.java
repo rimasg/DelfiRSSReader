@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
 public class RssDataProvider extends ContentProvider {
@@ -50,14 +51,61 @@ public class RssDataProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        // TODO: Implement this to handle requests to insert a new row.
-        throw new UnsupportedOperationException("Not yet implemented");
+        long id = -1;
+        switch (uriMatcher.match(uri)) {
+            case TITLE_CODE:
+                id = DatabaseManager.inst(getContext()).insertTitle(values);
+                if (-1 != id) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return Uri.withAppendedPath(uri, Long.toString(id));
+                } else {
+                    throw new SQLiteException("Insert error " + uri);
+                }
+            case CONTENT_CODE:
+                id = DatabaseManager.inst(getContext()).insertTitle(values);
+                if (-1 != id) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return Uri.withAppendedPath(uri, Long.toString(id));
+                } else {
+                    throw new SQLiteException("Insert error " + uri);
+                }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        int id = -1;
+        switch (uriMatcher.match(uri)) {
+            case TITLE_CODE:
+                id = DatabaseManager.inst(getContext()).bulkInsertTitles(values);
+                break;
+            case CONTENT_CODE:
+                id = DatabaseManager.inst(getContext()).bulkInsertContent(values);
+                break;
+            default:
+                throw new IllegalArgumentException("Bulk insert -- Invalid URI: " + uri);
+        }
+        return id;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        int id = -1;
+        switch (uriMatcher.match(uri)) {
+            case TITLE_CODE:
+                id = DatabaseManager.inst(getContext()).deleteAllRecords(RssDataContract.TitleEntry.TABLE_NAME);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case CONTENT_CODE:
+                id = DatabaseManager.inst(getContext()).deleteAllRecords(RssDataContract.ContentEntry.TABLE_NAME);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        return id;
     }
 
     @Override

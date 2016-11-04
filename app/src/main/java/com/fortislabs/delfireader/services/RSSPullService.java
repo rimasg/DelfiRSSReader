@@ -1,13 +1,13 @@
 package com.fortislabs.delfireader.services;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
-import android.widget.Toast;
 
 
 public class RssPullService extends IntentService {
+    private static final String TAG = "RssPullService";
 
     public RssPullService() {
         super("RssPullService");
@@ -28,13 +28,6 @@ public class RssPullService extends IntentService {
     }
 
     private void handleRssPullAction(String url) {
-        // TODO: Handle action RssPull
-        final long durationMillis = 3000L;
-        try {
-            Thread.sleep(durationMillis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Toast.makeText(this, "Operation finished in " + (durationMillis / 1000) + "seconds", Toast.LENGTH_SHORT).show();
+        // TODO: Handle RssPull action
     }
 }
