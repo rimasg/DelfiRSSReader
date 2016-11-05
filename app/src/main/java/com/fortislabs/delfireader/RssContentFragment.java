@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fortislabs.delfireader.data.RssDataContract;
 
@@ -45,6 +46,11 @@ public class RssContentFragment extends Fragment implements RssContract.View {
     public void showContent(Cursor cursor) {
         adapter.swapCursor(cursor);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

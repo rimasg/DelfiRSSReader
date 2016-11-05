@@ -10,6 +10,8 @@ import android.database.Cursor;
 public interface RssContract {
     interface View extends BaseView<Presenter> {
         void showContent(Cursor cursor);
+
+        void showToast(String message);
     }
 
     interface Presenter extends BasePresenter {
@@ -32,5 +34,9 @@ public interface RssContract {
         void bulkInsertContent(ContentValues[] values);
 
         void deleteAllRecords();
+
+        boolean getNetworkAvailable();
+
+        void setNetworkAvailable(boolean available);
     }
 }

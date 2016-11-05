@@ -10,10 +10,12 @@ import com.fortislabs.delfireader.data.RssDataContract;
 
 public class Title {
     public String title;
+    public String description;
     public String link;
 
     public Title(Cursor cursor) {
-        this.title = cursor.getString(RssDataContract.TitleEntry.INDEX_TITLE);
-        this.link = cursor.getString(RssDataContract.TitleEntry.INDEX_LINK);
+        title = cursor.getString(RssDataContract.TitleEntry.INDEX_TITLE);
+        description = cursor.getString(RssDataContract.TitleEntry.INDEX_DESCRIPTION);
+        link = cursor.getString(RssDataContract.TitleEntry.INDEX_LINK);
     }
 }

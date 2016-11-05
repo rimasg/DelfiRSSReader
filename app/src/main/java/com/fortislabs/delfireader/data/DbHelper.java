@@ -20,13 +20,15 @@ public class DbHelper extends SQLiteOpenHelper {
     private final String SQL_TITLE_CREATE = "CREATE TABLE " + RssDataContract.TitleEntry.TABLE_NAME + " (" +
             RssDataContract.TitleEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
             RssDataContract.TitleEntry.COL_TITLE + TEXT_TYPE + COMMA_SEP +
+            RssDataContract.TitleEntry.COL_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
             RssDataContract.TitleEntry.COL_LINK + TEXT_TYPE + ")";
     private final String SQL_CONTENT_CREATE = "CREATE TABLE " + RssDataContract.ContentEntry.TABLE_NAME + " (" +
             RssDataContract.ContentEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
             RssDataContract.ContentEntry.COL_TITLE + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+            RssDataContract.ContentEntry.COL_LINK + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_PUB_DATE + INTEGER_TYPE + COMMA_SEP +
-            RssDataContract.ContentEntry.COL_THUMBNAIL + TEXT_TYPE + COMMA_SEP +
+            RssDataContract.ContentEntry.COL_THUMBNAIL_URL + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_READ + BOOLEAN_TYPE + ")";
     private final String SQL_TITLE_DELETE = "DROP TABLE IF EXISTS " + RssDataContract.TitleEntry.TABLE_NAME;
     private final String SQL_CONTENT_DELETE = "DROP TABLE IF EXISTS " + RssDataContract.ContentEntry.TABLE_NAME;

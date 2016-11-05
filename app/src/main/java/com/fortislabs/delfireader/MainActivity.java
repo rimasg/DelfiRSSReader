@@ -1,5 +1,11 @@
 package com.fortislabs.delfireader;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
     private RssContract.Presenter presenter;
     private CharSequence title;
     private RssTitlesFragment rssTitlesFragment;
+    private NetworkReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
                 .commit();
 
         presenter = new RssPresenter(getApplicationContext(), getSupportLoaderManager(), rssTitlesFragment, rssContentFragment);
+
+        receiver = new NetworkReceiver();
         // TODO: 2016.11.03 testing only, remove this code
 /*
         for (int i = 0; i < 10; i++) {
@@ -59,6 +68,14 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
     protected void onResume() {
         super.onResume();
         presenter.start();
+        final IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(receiver);
+        super.onPause();
     }
 
     @Override
@@ -100,5 +117,18 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class NetworkReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+            final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+            if (networkInfo != null && networkInfo.isConnected()) {
+                presenter.setNetworkAvailable(true);
+            } else {
+                presenter.setNetworkAvailable(false);
+            }
+        }
     }
 }

@@ -22,8 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fortislabs.delfireader.data.RssDataContract;
 
@@ -85,8 +85,8 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
         });
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.titles_list_item, null, FROM_TITLE, TO_TITLE, 0);
         // TODO: 2016.11.03 later uncomment - SimpleCursorAdapter
-//        titleListView.setAdapter(adapter);
-        titleListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(), R.layout.titles_list_item, R.id.rss_title, RssTitles));
+        titleListView.setAdapter(adapter);
+//        titleListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(), R.layout.titles_list_item, R.id.rss_title, RssTitles));
         return titleListView;
     }
 
@@ -214,6 +214,11 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
     public void showContent(Cursor cursor) {
         adapter.swapCursor(cursor);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

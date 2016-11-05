@@ -11,8 +11,19 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.fortislabs.delfireader.R;
 import com.fortislabs.delfireader.RssPresenter;
 import com.fortislabs.delfireader.annotations.ReplyMessageId;
+import com.fortislabs.delfireader.data.RssDataContract;
+
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RssPullService extends IntentService {
@@ -41,9 +52,92 @@ public class RssPullService extends IntentService {
     }
 
     private void handleRssPullAction(String url) {
-        // TODO: Handle RssPull action
-        sendMessage(RssPresenter.TITLES_ID, null);
-        sendMessage(RssPresenter.CONTENT_ID, null);
+        // TODO: 2016.11.05 it's better to implement user notification
+        try {
+            downloadContent(downloadTitles(url));
+        } catch (IOException e) {
+            Log.e(TAG, getString(R.string.connection_error), e);
+        } catch (XmlPullParserException e) {
+            Log.e(TAG, getString(R.string.xml_error), e);
+        }
+    }
+
+    private List<RssPullParser.Entry> downloadTitles(String url) throws IOException, XmlPullParserException {
+        InputStream is = null;
+        final RssPullParser xmlParser = new RssPullParser();
+        List<RssPullParser.Entry> entries = null;
+        try {
+            is = downloadUrl(url);
+            entries = xmlParser.parse(is);
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+        }
+
+        final ContentValues[] values = convertTitleEntriesToContentValues(entries);
+        sendMessage(RssPresenter.TITLES_ID, values);
+        return entries;
+    }
+
+    private void downloadContent(List<RssPullParser.Entry> titles) throws IOException, XmlPullParserException {
+        InputStream is = null;
+        final RssPullParser xmlParser = new RssPullParser();
+        List<RssPullParser.Entry> entries = null;
+        for (RssPullParser.Entry title : titles) {
+            try {
+                is = downloadUrl(title.link);
+                entries = xmlParser.parse(is);
+            } finally {
+                if (is != null) {
+                    is.close();
+                }
+            }
+        }
+        final ContentValues[] values = convertContentEntriesToContentValues(entries);
+        sendMessage(RssPresenter.CONTENT_ID, values);
+    }
+
+    private InputStream downloadUrl(String urlString) throws IOException {
+        final URL url = new URL(urlString);
+        final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout(10000);
+        conn.setConnectTimeout(15000);
+        conn.setRequestMethod("GET");
+        conn.setDoInput(true);
+        conn.connect();
+        final InputStream stream = conn.getInputStream();
+        return stream;
+    }
+
+    private ContentValues[] convertTitleEntriesToContentValues(List<RssPullParser.Entry> entries) {
+        final List<ContentValues> values = new ArrayList<>();
+        for (RssPullParser.Entry entry : entries) {
+            final ContentValues value = new ContentValues();
+            value.put(RssDataContract.TitleEntry.COL_TITLE, entry.title);
+            value.put(RssDataContract.TitleEntry.COL_DESCRIPTION, entry.description);
+            value.put(RssDataContract.TitleEntry.COL_LINK, entry.link);
+            values.add(value);
+        }
+        ContentValues[] valuesArray = new ContentValues[entries.size()];
+        valuesArray = values.toArray(valuesArray);
+        return valuesArray;
+    }
+
+    private ContentValues[] convertContentEntriesToContentValues(List<RssPullParser.Entry> entries) {
+        final List<ContentValues> values = new ArrayList<>();
+        for (RssPullParser.Entry entry : entries) {
+            final ContentValues value = new ContentValues();
+            value.put(RssDataContract.ContentEntry.COL_TITLE, entry.title);
+            value.put(RssDataContract.ContentEntry.COL_DESCRIPTION, entry.description);
+            value.put(RssDataContract.ContentEntry.COL_LINK, entry.link);
+            value.put(RssDataContract.ContentEntry.COL_PUB_DATE, entry.pubDate);
+            value.put(RssDataContract.ContentEntry.COL_THUMBNAIL_URL, entry.thumbnailUrl);
+            values.add(value);
+        }
+        ContentValues[] valuesArray = new ContentValues[entries.size()];
+        valuesArray = values.toArray(valuesArray);
+        return valuesArray;
     }
 
     private void sendMessage(@ReplyMessageId int messageId, ContentValues[] values) {

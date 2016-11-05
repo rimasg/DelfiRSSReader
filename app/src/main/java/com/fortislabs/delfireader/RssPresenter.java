@@ -29,6 +29,7 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     @NonNull private final LoaderManager loaderManager;
     @NonNull private final RssContract.View titleView;
     @NonNull private final RssContract.View contentView;
+    private boolean isNetworkAvailable;
     // TODO: 2016.11.04 implement RssPull service result handling
     private Handler handler = new Handler(){
         @Override
@@ -70,7 +71,11 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
 
     @Override
     public void initRssPullService() {
-        RssPullService.startRssPullAction(context, handler, RssDataContract.RSS_TITLES_URL);
+        if (isNetworkAvailable) {
+            RssPullService.startRssPullAction(context, handler, RssDataContract.RSS_TITLES_URL);
+        } else {
+            contentView.showToast(context.getString(R.string.network_not_available));
+        }
     }
 
     @Override
@@ -118,6 +123,16 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     public void deleteAllRecords() {
         context.getContentResolver().delete(RssDataContract.TitleEntry.CONTENT_URI, null, null);
         context.getContentResolver().delete(RssDataContract.ContentEntry.CONTENT_URI, null, null);
+    }
+
+    @Override
+    public boolean getNetworkAvailable() {
+        return isNetworkAvailable;
+    }
+
+    @Override
+    public void setNetworkAvailable(boolean available) {
+        isNetworkAvailable = available;
     }
 
     @Override

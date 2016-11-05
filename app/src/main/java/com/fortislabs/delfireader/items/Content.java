@@ -11,15 +11,17 @@ import com.fortislabs.delfireader.data.RssDataContract;
 public class Content {
     public String title;
     public String description;
+    public String link;
     public int pub_date;
-    public String thumbnail;
+    public String thumbnailUrl;
     public int read;
 
     public Content(Cursor cursor) {
         title = cursor.getString(RssDataContract.ContentEntry.INDEX_TITLE);
         description = cursor.getString(RssDataContract.ContentEntry.INDEX_DESCRIPTION);
+        link = cursor.getString(RssDataContract.ContentEntry.INDEX_LINK);
         pub_date = cursor.getInt(RssDataContract.ContentEntry.INDEX_PUB_DATE);
-        thumbnail = cursor.getString(RssDataContract.ContentEntry.INDEX_THUMBNAIL);
+        thumbnailUrl = cursor.getString(RssDataContract.ContentEntry.INDEX_THUMBNAIL_URL);
         read = cursor.getInt(RssDataContract.ContentEntry.INDEX_READ);
     }
 }
