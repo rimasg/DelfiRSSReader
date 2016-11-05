@@ -1,29 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content_list_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/rss_title"
+        android:text="Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_vertical"
-        android:paddingBottom="5dp"
-        android:paddingLeft="12dp"
-        android:paddingTop="5dp"
-        android:text="None"
+        android:textStyle="bold"
         android:textSize="18sp"/>
 
     <TextView
         android:id="@+id/rss_content"
+        android:text="Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_vertical"
         android:layout_below="@+id/rss_title"
-        android:paddingBottom="5dp"
-        android:paddingLeft="12dp"
-        android:paddingTop="5dp"
-        android:text="None"
-        android:textSize="18sp"/>
+        android:visibility="gone"
+        android:textSize="16sp"/>
+
+    <ImageButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/arrow_down" />
+
 </RelativeLayout>

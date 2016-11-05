@@ -83,8 +83,8 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
                 selectItem(position);
             }
         });
+        // TODO: 2016.11.03 later uncomment - SimpleCursorAdapter and remove ArrayAdapter
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.titles_list_item, null, FROM_TITLE, TO_TITLE, 0);
-        // TODO: 2016.11.03 later uncomment - SimpleCursorAdapter
         titleListView.setAdapter(adapter);
 //        titleListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(), R.layout.titles_list_item, R.id.rss_title, RssTitles));
         return titleListView;

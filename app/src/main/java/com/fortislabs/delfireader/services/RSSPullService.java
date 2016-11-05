@@ -83,11 +83,11 @@ public class RssPullService extends IntentService {
     private void downloadContent(List<RssPullParser.Entry> titles) throws IOException, XmlPullParserException {
         InputStream is = null;
         final RssPullParser xmlParser = new RssPullParser();
-        List<RssPullParser.Entry> entries = null;
+        List<RssPullParser.Entry> entries = new ArrayList<>();
         for (RssPullParser.Entry title : titles) {
             try {
                 is = downloadUrl(title.link);
-                entries = xmlParser.parse(is);
+                entries.addAll(xmlParser.parse(is));
             } finally {
                 if (is != null) {
                     is.close();
