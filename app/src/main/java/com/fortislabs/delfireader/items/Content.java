@@ -9,6 +9,7 @@ import com.fortislabs.delfireader.data.RssDataContract;
  */
 
 public class Content {
+    public String category_title;
     public String title;
     public String description;
     public String link;
@@ -17,6 +18,7 @@ public class Content {
     public int read;
 
     public Content(Cursor cursor) {
+        category_title = cursor.getString(RssDataContract.ContentEntry.INDEX_CATEGORY_TITLE);
         title = cursor.getString(RssDataContract.ContentEntry.INDEX_TITLE);
         description = cursor.getString(RssDataContract.ContentEntry.INDEX_DESCRIPTION);
         link = cursor.getString(RssDataContract.ContentEntry.INDEX_LINK);

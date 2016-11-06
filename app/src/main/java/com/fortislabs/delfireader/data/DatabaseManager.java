@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.fortislabs.delfireader.annotations.TableName;
+
 /**
  * Created by Okis on 2016.11.03.
  */
@@ -48,7 +50,7 @@ public final class DatabaseManager {
         final Cursor cursor = db.query(
                 RssDataContract.ContentEntry.TABLE_NAME,
                 RssDataContract.ContentEntry.PROJECTION,
-                RssDataContract.ContentEntry.COL_TITLE + " = ?",
+                RssDataContract.ContentEntry.COL_CATEGORY_TITLE + " = ?",
                 new String[]{title}, null, null, null);
         return cursor;
     }
@@ -91,7 +93,7 @@ public final class DatabaseManager {
         return values.length;
     }
 
-    public int deleteAllRecords(String tableName) {
+    public int deleteAllRecords(@TableName String tableName) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete(tableName, "1", null);
     }

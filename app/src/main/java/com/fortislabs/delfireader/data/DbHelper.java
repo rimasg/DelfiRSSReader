@@ -24,6 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
             RssDataContract.TitleEntry.COL_LINK + TEXT_TYPE + ")";
     private final String SQL_CONTENT_CREATE = "CREATE TABLE " + RssDataContract.ContentEntry.TABLE_NAME + " (" +
             RssDataContract.ContentEntry._ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
+            RssDataContract.ContentEntry.COL_CATEGORY_TITLE + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_TITLE + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
             RssDataContract.ContentEntry.COL_LINK + TEXT_TYPE + COMMA_SEP +

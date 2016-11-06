@@ -23,7 +23,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class RssPullService extends IntentService {
@@ -65,7 +67,7 @@ public class RssPullService extends IntentService {
     private List<RssPullParser.Entry> downloadTitles(String url) throws IOException, XmlPullParserException {
         InputStream is = null;
         final RssPullParser xmlParser = new RssPullParser();
-        List<RssPullParser.Entry> entries = null;
+        List<RssPullParser.Entry> entries = new ArrayList<>();
         try {
             is = downloadUrl(url);
             entries = xmlParser.parse(is);
@@ -83,18 +85,20 @@ public class RssPullService extends IntentService {
     private void downloadContent(List<RssPullParser.Entry> titles) throws IOException, XmlPullParserException {
         InputStream is = null;
         final RssPullParser xmlParser = new RssPullParser();
-        List<RssPullParser.Entry> entries = new ArrayList<>();
+        final HashMap<String, List<RssPullParser.Entry>> titleContentMap = new HashMap<>();
         for (RssPullParser.Entry title : titles) {
             try {
+                List<RssPullParser.Entry> entries = new ArrayList<>();
                 is = downloadUrl(title.link);
                 entries.addAll(xmlParser.parse(is));
+                titleContentMap.put(title.title, entries);
             } finally {
                 if (is != null) {
                     is.close();
                 }
             }
         }
-        final ContentValues[] values = convertContentEntriesToContentValues(entries);
+        final ContentValues[] values = convertContentEntriesToContentValues(titleContentMap);
         sendMessage(RssPresenter.CONTENT_ID, values);
     }
 
@@ -124,18 +128,22 @@ public class RssPullService extends IntentService {
         return valuesArray;
     }
 
-    private ContentValues[] convertContentEntriesToContentValues(List<RssPullParser.Entry> entries) {
+    private ContentValues[] convertContentEntriesToContentValues(HashMap<String, List<RssPullParser.Entry>> titleContentMap) {
         final List<ContentValues> values = new ArrayList<>();
-        for (RssPullParser.Entry entry : entries) {
-            final ContentValues value = new ContentValues();
-            value.put(RssDataContract.ContentEntry.COL_TITLE, entry.title);
-            value.put(RssDataContract.ContentEntry.COL_DESCRIPTION, entry.description);
-            value.put(RssDataContract.ContentEntry.COL_LINK, entry.link);
-            value.put(RssDataContract.ContentEntry.COL_PUB_DATE, entry.pubDate);
-            value.put(RssDataContract.ContentEntry.COL_THUMBNAIL_URL, entry.thumbnailUrl);
-            values.add(value);
+        for (Map.Entry<String, List<RssPullParser.Entry>> mapEntry : titleContentMap.entrySet()) {
+            final String categoryTitle = mapEntry.getKey();
+            for (RssPullParser.Entry entry : mapEntry.getValue()) {
+                final ContentValues value = new ContentValues();
+                value.put(RssDataContract.ContentEntry.COL_CATEGORY_TITLE, categoryTitle);
+                value.put(RssDataContract.ContentEntry.COL_TITLE, entry.title);
+                value.put(RssDataContract.ContentEntry.COL_DESCRIPTION, entry.description);
+                value.put(RssDataContract.ContentEntry.COL_LINK, entry.link);
+                value.put(RssDataContract.ContentEntry.COL_PUB_DATE, entry.pubDate);
+                value.put(RssDataContract.ContentEntry.COL_THUMBNAIL_URL, entry.thumbnailUrl);
+                values.add(value);
+            }
         }
-        ContentValues[] valuesArray = new ContentValues[entries.size()];
+        ContentValues[] valuesArray = new ContentValues[values.size()];
         valuesArray = values.toArray(valuesArray);
         return valuesArray;
     }

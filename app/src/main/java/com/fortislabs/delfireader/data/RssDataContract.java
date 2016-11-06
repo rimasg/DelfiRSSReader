@@ -42,6 +42,7 @@ public final class RssDataContract {
         public static final String TABLE_NAME = "content";
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(TABLE_NAME).build();
 
+        public static final String COL_CATEGORY_TITLE = "category_title";
         public static final String COL_TITLE = "title";
         public static final String COL_DESCRIPTION = "description";
         public static final String COL_LINK = "link";
@@ -49,15 +50,17 @@ public final class RssDataContract {
         public static final String COL_THUMBNAIL_URL = "thumbnail_url";
         public static final String COL_READ = "read"; // "TRUE" if article has been read
 
-        public static final int INDEX_TITLE = 1;
-        public static final int INDEX_DESCRIPTION = 2;
-        public static final int INDEX_LINK = 3;
-        public static final int INDEX_PUB_DATE = 4;
-        public static final int INDEX_THUMBNAIL_URL = 5;
-        public static final int INDEX_READ = 6;
+        public static final int INDEX_CATEGORY_TITLE = 1;
+        public static final int INDEX_TITLE = 2;
+        public static final int INDEX_DESCRIPTION = 3;
+        public static final int INDEX_LINK = 4;
+        public static final int INDEX_PUB_DATE = 5;
+        public static final int INDEX_THUMBNAIL_URL = 6;
+        public static final int INDEX_READ = 7;
 
         public static final String PROJECTION[] = {
                 _ID,
+                COL_CATEGORY_TITLE,
                 COL_TITLE,
                 COL_DESCRIPTION,
                 COL_LINK,
