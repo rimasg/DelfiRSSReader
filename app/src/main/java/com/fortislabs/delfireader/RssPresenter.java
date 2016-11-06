@@ -138,6 +138,7 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     @Override
     public void start() {
         initLoaders();
+        initRssPullService();
     }
 
     @Override
