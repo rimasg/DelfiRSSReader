@@ -75,7 +75,6 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final String[] RssTitles =  getResources().getStringArray(R.array.rss_titles);
         titleListView = (ListView) inflater.inflate(R.layout.fragment_titles_list, container, false);
         titleListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -83,10 +82,8 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
                 selectItem(position);
             }
         });
-        // TODO: 2016.11.03 later uncomment - SimpleCursorAdapter and remove ArrayAdapter
         adapter = new SimpleCursorAdapter(getActivity(), R.layout.titles_list_item, null, FROM_TITLE, TO_TITLE, 0);
         titleListView.setAdapter(adapter);
-//        titleListView.setAdapter(new ArrayAdapter<>(getActionBar().getThemedContext(), R.layout.titles_list_item, R.id.rss_title, RssTitles));
         return titleListView;
     }
 

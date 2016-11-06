@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 
 import com.fortislabs.delfireader.data.RssDataContract;
 import com.fortislabs.delfireader.items.Title;
@@ -30,21 +29,18 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     @NonNull private final RssContract.View titleView;
     @NonNull private final RssContract.View contentView;
     private boolean isNetworkAvailable;
-    // TODO: 2016.11.04 implement RssPull service result handling
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             ContentValues[] values = null;
             switch (msg.what) {
                 case TITLES_ID:
-                    Log.d(TAG, "handleMessage: Titles received");
                     values = (ContentValues[]) msg.obj;
                     if (values != null) {
                         bulkInsertTitle(values);
                     }
                     break;
                 case CONTENT_ID:
-                    Log.d(TAG, "handleMessage: Content received");
                     values = (ContentValues[]) msg.obj;
                     if (values != null) {
                         bulkInsertContent(values);
@@ -138,7 +134,6 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     @Override
     public void start() {
         initLoaders();
-        initRssPullService();
     }
 
     @Override
