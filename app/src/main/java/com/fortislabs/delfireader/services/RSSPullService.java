@@ -54,7 +54,7 @@ public class RssPullService extends IntentService {
     }
 
     private void handleRssPullAction(String url) {
-        // TODO: 2016.11.05 it's better to implement user notification
+        // TODO: 2016.11.05 it's better to implement Toast user notification
         try {
             downloadContent(downloadTitles(url));
         } catch (IOException e) {
