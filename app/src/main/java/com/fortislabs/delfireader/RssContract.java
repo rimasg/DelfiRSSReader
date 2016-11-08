@@ -21,9 +21,13 @@ public interface RssContract {
 
         void loadTitles();
 
+        void loadTitleThumbnailsToCache();
+
         void loadContentByTitle(String title);
 
         void loadContentByTitleId(int id);
+
+        void loadContentThumbnailsToCache();
 
         void insertTitle(ContentValues values);
 

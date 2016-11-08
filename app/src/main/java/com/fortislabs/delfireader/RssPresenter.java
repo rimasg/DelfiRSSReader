@@ -11,7 +11,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 
+import com.bumptech.glide.Glide;
 import com.fortislabs.delfireader.data.RssDataContract;
+import com.fortislabs.delfireader.items.Content;
 import com.fortislabs.delfireader.items.Title;
 import com.fortislabs.delfireader.services.RssPullService;
 
@@ -38,12 +40,14 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
                     values = (ContentValues[]) msg.obj;
                     if (values != null) {
                         bulkInsertTitle(values);
+                        loadTitleThumbnailsToCache();
                     }
                     break;
                 case CONTENT_ID:
                     values = (ContentValues[]) msg.obj;
                     if (values != null) {
                         bulkInsertContent(values);
+                        loadContentThumbnailsToCache();
                     }
                     break;
             }
@@ -81,6 +85,11 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     }
 
     @Override
+    public void loadTitleThumbnailsToCache() {
+        // no-op
+    }
+
+    @Override
     public void loadContentByTitle(String title) {
         final Cursor cursor = context.getContentResolver().query(RssDataContract.ContentEntry.CONTENT_URI, null, null, new String[]{title}, null);
         contentView.showContent(cursor);
@@ -92,6 +101,18 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
         if (cursor.moveToPosition(id)) {
             final Title title = new Title(cursor);
             loadContentByTitle(title.title);
+        }
+    }
+
+    @Override
+    public void loadContentThumbnailsToCache() {
+        final Cursor cursor = context.getContentResolver().query(RssDataContract.ContentEntry.CONTENT_URI, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                final String thumbnailUrl = new Content(cursor).thumbnailUrl;
+                // FIXME: 2016.11.08 the code does not load files into ImageDownloadTarget()
+                Glide.with(context).load(thumbnailUrl).downloadOnly(new ImageDownloadTarget(context));
+            } while (cursor.moveToNext());
         }
     }
 

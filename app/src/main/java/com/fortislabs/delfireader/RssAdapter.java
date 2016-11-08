@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fortislabs.delfireader.items.Content;
 
 /**
@@ -49,6 +50,13 @@ public class RssAdapter extends CursorAdapter {
                 }
             }
         });
+        // TODO: 2016.11.08 we should be loading cached images, not from network
+        Glide
+                .with(context)
+                // .load(File_Uri)
+                .load(content.thumbnailUrl)
+                .placeholder(android.R.drawable.ic_menu_view)
+                .into(holder.thumbnail);
     }
 
     private void slideUp(Context context, View v) {
@@ -82,7 +90,7 @@ public class RssAdapter extends CursorAdapter {
         ViewHolder(View view) {
             title = (TextView) view.findViewById(R.id.rss_title);
             description = (TextView) view.findViewById(R.id.rss_content);
-            thumbnail = null;
+            thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             toggleButton = (ImageButton) view.findViewById(R.id.toggleButton);
         }
     }
