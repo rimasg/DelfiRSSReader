@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,14 +63,6 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
         }
     }
 
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(title);
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!rssTitlesFragment.isDrawerOpen()) {
@@ -78,6 +71,17 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
             return true;
         }
         return super.onCreateOptionsMenu(menu);
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle(title);
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -91,7 +95,12 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
                 Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
-                Toast.makeText(this, "About App", Toast.LENGTH_SHORT).show();
+                final AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("About")
+                        .setMessage("Author: Rimas Gaina")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create();
+                dialog.show();
                 break;
         }
         return super.onOptionsItemSelected(item);

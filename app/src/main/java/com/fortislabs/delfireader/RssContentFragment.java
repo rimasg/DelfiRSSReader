@@ -53,6 +53,11 @@ public class RssContentFragment extends Fragment implements RssContract.View {
     }
 
     @Override
+    public void showTitle(String title) {
+        // no-op
+    }
+
+    @Override
     public void setPresenter(RssContract.Presenter presenter) {
         this.presenter = presenter;
     }

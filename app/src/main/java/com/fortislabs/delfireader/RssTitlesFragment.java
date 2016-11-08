@@ -219,6 +219,11 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
     }
 
     @Override
+    public void showTitle(String title) {
+        ((MainActivity) getActivity()).setTitle(title);
+    }
+
+    @Override
     public void setPresenter(RssContract.Presenter presenter) {
         this.presenter = presenter;
     }

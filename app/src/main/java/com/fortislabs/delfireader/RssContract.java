@@ -12,6 +12,8 @@ public interface RssContract {
         void showContent(Cursor cursor);
 
         void showToast(String message);
+
+        void showTitle(String title);
     }
 
     interface Presenter extends BasePresenter {

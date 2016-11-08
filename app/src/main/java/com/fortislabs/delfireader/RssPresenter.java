@@ -101,6 +101,7 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
         if (cursor.moveToPosition(id)) {
             final Title title = new Title(cursor);
             loadContentByTitle(title.title);
+            titleView.showTitle(title.title);
         }
     }
 
@@ -110,8 +111,7 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
         if (cursor.moveToFirst()) {
             do {
                 final String thumbnailUrl = new Content(cursor).thumbnailUrl;
-                // FIXME: 2016.11.08 the code does not load files into ImageDownloadTarget()
-                Glide.with(context).load(thumbnailUrl).downloadOnly(new ImageDownloadTarget(context));
+                Glide.with(context).load(thumbnailUrl).downloadOnly(125, 125);
             } while (cursor.moveToNext());
         }
     }

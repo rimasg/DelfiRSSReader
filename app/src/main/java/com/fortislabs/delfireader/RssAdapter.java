@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fortislabs.delfireader.items.Content;
 
 /**
@@ -50,11 +51,10 @@ public class RssAdapter extends CursorAdapter {
                 }
             }
         });
-        // TODO: 2016.11.08 we should be loading cached images, not from network
         Glide
                 .with(context)
-                // .load(File_Uri)
                 .load(content.thumbnailUrl)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(android.R.drawable.ic_menu_view)
                 .into(holder.thumbnail);
     }
