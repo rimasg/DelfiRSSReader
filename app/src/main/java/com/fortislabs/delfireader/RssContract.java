@@ -13,6 +13,8 @@ public interface RssContract {
 
         void showToast(String message);
 
+        void showSnackbarNotification(String message);
+
         void showTitle(String title);
     }
 

@@ -179,6 +179,7 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
                 contentView.showContent(data);
                 break;
         }
+        contentView.showSnackbarNotification("News downloaded.");
     }
 
     @Override

@@ -219,6 +219,11 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
     }
 
     @Override
+    public void showSnackbarNotification(String message) {
+        // no-op
+    }
+
+    @Override
     public void showTitle(String title) {
         ((MainActivity) getActivity()).setTitle(title);
     }

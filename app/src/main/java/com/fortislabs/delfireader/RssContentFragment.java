@@ -2,6 +2,7 @@ package com.fortislabs.delfireader;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class RssContentFragment extends Fragment implements RssContract.View {
 
     private RssAdapter rssAdapter;
     private RssContract.Presenter presenter;
+    private ListView contentListView;
 
     public static RssContentFragment newInstance() {
         RssContentFragment fragment = new RssContentFragment();
@@ -35,7 +37,7 @@ public class RssContentFragment extends Fragment implements RssContract.View {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final ListView contentListView = (ListView) inflater.inflate(R.layout.fragment_content_list, container, false);
+        contentListView = (ListView) inflater.inflate(R.layout.fragment_content_list, container, false);
         rssAdapter = new RssAdapter(getActivity(), null, 0);
         contentListView.setAdapter(rssAdapter);
         return contentListView;
@@ -50,6 +52,11 @@ public class RssContentFragment extends Fragment implements RssContract.View {
     @Override
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showSnackbarNotification(String message) {
+        Snackbar.make(contentListView, message, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

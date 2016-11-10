@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements RssTitlesFragment
                 presenter.initRssPullService();
                 break;
             case R.id.action_settings:
-                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Setting not implemented yet", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_about:
                 final AlertDialog dialog = new AlertDialog.Builder(this)
