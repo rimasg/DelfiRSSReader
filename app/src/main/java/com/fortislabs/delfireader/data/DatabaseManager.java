@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.fortislabs.delfireader.annotations.TableName;
@@ -14,7 +15,7 @@ import com.fortislabs.delfireader.annotations.TableName;
 
 public final class DatabaseManager {
     private static DatabaseManager inst;
-    private DbHelper dbHelper;
+    private SQLiteOpenHelper dbHelper;
 
     private DatabaseManager(Context context) {
         dbHelper = new DbHelper(context.getApplicationContext());
