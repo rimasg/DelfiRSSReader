@@ -229,6 +229,16 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
     }
 
     @Override
+    public void setProgress(int maxValue) {
+        // no-op
+    }
+
+    @Override
+    public void setProgressMax(int maxValue) {
+        // no-op
+    }
+
+    @Override
     public void setPresenter(RssContract.Presenter presenter) {
         this.presenter = presenter;
     }

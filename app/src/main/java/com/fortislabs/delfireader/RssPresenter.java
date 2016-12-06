@@ -25,6 +25,8 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
     private static final String TAG = "RssPresenter";
     public static final int TITLES_ID = 717;
     public static final int CONTENT_ID = 780;
+    public static final int PROGRESS_STEP = 838;
+    public static final int PROGRESS_MAX = 916;
 
     @NonNull private final Context context;
     @NonNull private final LoaderManager loaderManager;
@@ -49,6 +51,12 @@ public class RssPresenter implements RssContract.Presenter, LoaderManager.Loader
                         bulkInsertContent(values);
                         loadContentThumbnailsToCache();
                     }
+                    break;
+                case PROGRESS_STEP:
+                    contentView.setProgress((Integer) msg.obj);
+                    break;
+                case PROGRESS_MAX:
+                    contentView.setProgressMax((Integer) msg.obj);
                     break;
             }
         }

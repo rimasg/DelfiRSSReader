@@ -16,6 +16,10 @@ public interface RssContract {
         void showSnackbarNotification(String message);
 
         void showTitle(String title);
+
+        void setProgress(int stepValue);
+
+        void setProgressMax(int maxValue);
     }
 
     interface Presenter extends BasePresenter {

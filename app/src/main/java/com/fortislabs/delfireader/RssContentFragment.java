@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fortislabs.delfireader.data.RssDataContract;
@@ -28,6 +29,7 @@ public class RssContentFragment extends Fragment implements RssContract.View {
 
     private RssAdapter rssAdapter;
     private RssContract.Presenter presenter;
+    private ProgressBar progressBar;
     private ListView contentListView;
 
     public static RssContentFragment newInstance() {
@@ -37,10 +39,12 @@ public class RssContentFragment extends Fragment implements RssContract.View {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        contentListView = (ListView) inflater.inflate(R.layout.fragment_content_list, container, false);
+        final View view = inflater.inflate(R.layout.fragment_content_list, container, false);
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        contentListView = (ListView) view.findViewById(R.id.rss_content);
         rssAdapter = new RssAdapter(getActivity(), null, 0);
         contentListView.setAdapter(rssAdapter);
-        return contentListView;
+        return view;
     }
 
     @Override
@@ -62,6 +66,16 @@ public class RssContentFragment extends Fragment implements RssContract.View {
     @Override
     public void showTitle(String title) {
         // no-op
+    }
+
+    @Override
+    public void setProgress(int maxValue) {
+        progressBar.setProgress(maxValue);
+    }
+
+    @Override
+    public void setProgressMax(int maxValue) {
+        progressBar.setMax(maxValue);
     }
 
     @Override
