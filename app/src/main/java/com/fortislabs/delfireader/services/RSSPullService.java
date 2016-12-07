@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.fortislabs.delfireader.R;
 import com.fortislabs.delfireader.RssPresenter;
+import com.fortislabs.delfireader.annotations.ProgressMessageId;
 import com.fortislabs.delfireader.annotations.ReplyMessageId;
 import com.fortislabs.delfireader.data.RssDataContract;
 
@@ -83,6 +84,8 @@ public class RssPullService extends IntentService {
     }
 
     private void downloadContent(List<RssPullParser.Entry> titles) throws IOException, XmlPullParserException {
+        setProgress(RssPresenter.PROGRESS_MAX, titles.size());
+        int progress = 0;
         InputStream is = null;
         final RssPullParser xmlParser = new RssPullParser();
         final HashMap<String, List<RssPullParser.Entry>> titleContentMap = new HashMap<>();
@@ -92,12 +95,14 @@ public class RssPullService extends IntentService {
                 is = downloadUrl(title.link);
                 entries.addAll(xmlParser.parse(is));
                 titleContentMap.put(title.title, entries);
+                setProgress(RssPresenter.PROGRESS_STEP, ++progress);
             } finally {
                 if (is != null) {
                     is.close();
                 }
             }
         }
+        setProgress(RssPresenter.PROGRESS_STEP, 0);
         final ContentValues[] values = convertContentEntriesToContentValues(titleContentMap);
         sendMessage(RssPresenter.CONTENT_ID, values);
     }
@@ -152,6 +157,17 @@ public class RssPullService extends IntentService {
         final Message message = Message.obtain();
         message.what = messageId;
         message.obj = values;
+        try {
+            replyMessenger.send(message);
+        } catch (RemoteException e) {
+            Log.e(getClass().getName(), "Exception while sending reply message back to RssPresenter.", e);
+        }
+    }
+
+    private void setProgress(@ProgressMessageId int messageId, int value) {
+        final Message message = Message.obtain();
+        message.what = messageId;
+        message.obj = value;
         try {
             replyMessenger.send(message);
         } catch (RemoteException e) {
