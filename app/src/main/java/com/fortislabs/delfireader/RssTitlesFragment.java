@@ -91,8 +91,8 @@ public class RssTitlesFragment extends Fragment implements RssContract.View {
         return drawerLayout != null && drawerLayout.isDrawerOpen(fragmentContainerView);
     }
 
-    public void setUp(int fragmentID, DrawerLayout drawerLayout) {
-        fragmentContainerView = getActivity().findViewById(fragmentID);
+    public void setUp(int fragmentId, DrawerLayout drawerLayout) {
+        fragmentContainerView = getActivity().findViewById(fragmentId);
         this.drawerLayout = drawerLayout;
         this.drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
